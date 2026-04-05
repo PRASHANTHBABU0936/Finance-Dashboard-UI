@@ -3,7 +3,7 @@ import { LayoutDashboard, ArrowLeftRight, PieChart, Settings, LogOut } from 'luc
 
 export function Sidebar() {
   return (
-    <aside className="w-64 bg-card text-card-foreground border-r border-border h-full flex flex-col items-start px-4 py-6 shadow-sm">
+    <aside className="w-64 hidden md:flex bg-card text-card-foreground border-r border-border h-full flex-col items-start px-4 py-6 shadow-sm">
       <div className="flex items-center gap-2 px-2 mb-10 w-full">
         <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-primary-foreground font-bold shadow-md shadow-primary/20">
           Z

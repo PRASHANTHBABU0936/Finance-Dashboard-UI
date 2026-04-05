@@ -13,13 +13,24 @@ export function Header() {
     dispatch({ type: 'TOGGLE_DARK_MODE' });
   };
 
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return 'Good morning';
+    if (hour < 18) return 'Good afternoon';
+    return 'Good evening';
+  };
+
   return (
     <header className="h-20 border-b border-border bg-card/50 backdrop-blur-md sticky top-0 z-10 flex items-center justify-between px-8 w-full shadow-sm">
       <div>
         <h2 className="text-2xl font-semibold text-foreground tracking-tight">
-          Welcome back, Prashanth 👋
+          {getGreeting()}, Prashanth 👋
         </h2>
-        <p className="text-sm text-foreground/60 mt-0.5">Here's what's happening with your finances today.</p>
+        <p className="text-sm text-foreground/60 mt-0.5">
+          {state.role === 'admin' 
+            ? "Mode: Admin (Full Access)" 
+            : "Mode: Viewer (Read-only)"}
+        </p>
       </div>
 
       <div className="flex items-center gap-4">

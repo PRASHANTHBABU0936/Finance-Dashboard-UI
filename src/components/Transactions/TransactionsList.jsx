@@ -1,23 +1,45 @@
 import React, { useState, useMemo } from 'react';
 import { useFinance } from '../../context/FinanceContext';
-import { Search, Plus, Filter, ArrowUpRight, ArrowDownRight, Download } from 'lucide-react';
+import { Search, Plus, Filter, ArrowUpRight, ArrowDownRight, Download, Trash2, ArrowUpDown } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import { TransactionForm } from './TransactionForm';
 
 export function TransactionsList() {
-  const { state } = useFinance();
+  const { state, dispatch } = useFinance();
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('all'); // all, income, expense
+  const [sortBy, setSortBy] = useState('newest'); // newest, oldest, high_amount, low_amount
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const handleDelete = (id) => {
+    if (window.confirm("Are you sure you want to delete this transaction?")) {
+      const transaction = state.transactions.find(t => t.id === id);
+      dispatch({ type: 'DELETE_TRANSACTION', payload: id });
+       dispatch({
+        type: 'SET_FEEDBACK',
+        payload: { type: 'info', message: `${transaction?.title} has been removed.` }
+      });
+    }
+  };
+
   const filteredTransactions = useMemo(() => {
-    return state.transactions.filter(t => {
+    let result = state.transactions.filter(t => {
       const matchSearch = t.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
                           t.category.toLowerCase().includes(searchTerm.toLowerCase());
       const matchType = filterType === 'all' ? true : t.type === filterType;
       return matchSearch && matchType;
     });
-  }, [state.transactions, searchTerm, filterType]);
+
+    result.sort((a, b) => {
+      if (sortBy === 'newest') return new Date(b.date) - new Date(a.date);
+      if (sortBy === 'oldest') return new Date(a.date) - new Date(b.date);
+      if (sortBy === 'high_amount') return b.amount - a.amount;
+      if (sortBy === 'low_amount') return a.amount - b.amount;
+      return 0;
+    });
+
+    return result;
+  }, [state.transactions, searchTerm, filterType, sortBy]);
 
   const exportCSV = () => {
     const headers = ['Date', 'Title', 'Category', 'Type', 'Amount'];
@@ -69,25 +91,44 @@ export function TransactionsList() {
             <Filter size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-foreground/50 pointer-events-none" />
           </div>
 
-          <button onClick={exportCSV} className="p-2 border border-border flex-shrink-0 rounded-lg text-foreground/70 hover:bg-secondary hover:text-foreground transition-colors" title="Export CSV">
-            <Download size={18} />
-          </button>
+          <div className="relative flex-shrink-0">
+            <select 
+              className="appearance-none bg-secondary/50 border border-border rounded-lg pl-8 pr-8 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 cursor-pointer"
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+            >
+              <option value="newest">Newest</option>
+              <option value="oldest">Oldest</option>
+              <option value="high_amount">Highest Amount</option>
+              <option value="low_amount">Lowest Amount</option>
+            </select>
+            <ArrowUpDown size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-foreground/50 pointer-events-none" />
+          </div>
 
           {state.role === 'admin' && (
-            <button 
-              onClick={() => setIsModalOpen(true)}
-              className="px-4 py-2 bg-primary text-white rounded-lg flex-shrink-0 text-sm font-medium hover:bg-primary/90 transition-colors flex items-center gap-2"
-            >
-              <Plus size={16} /> Add 
-            </button>
+            <>
+              <button 
+                onClick={exportCSV} 
+                className="p-2 border border-border flex-shrink-0 rounded-lg text-foreground/70 hover:bg-secondary hover:text-foreground transition-colors" 
+                title="Export CSV"
+              >
+                <Download size={18} />
+              </button>
+              <button 
+                onClick={() => setIsModalOpen(true)}
+                className="px-4 py-2 bg-primary text-white rounded-lg flex-shrink-0 text-sm font-medium hover:bg-primary/90 transition-colors flex items-center gap-2"
+              >
+                <Plus size={16} /> Add 
+              </button>
+            </>
           )}
         </div>
       </div>
 
       <div className="flex-1 overflow-auto p-4 hide-scrollbar">
         {filteredTransactions.length === 0 ? (
-          <div className="h-full flex items-center justify-center text-foreground/50 text-sm">
-            No transactions found.
+          <div className="h-full flex flex-col items-center justify-center text-foreground/50 text-sm">
+            <p>No transactions yet. Add your first one.</p>
           </div>
         ) : (
           <div className="flex flex-col gap-2">
@@ -102,10 +143,19 @@ export function TransactionsList() {
                     <span className="text-xs text-foreground/60">{format(parseISO(t.date), 'MMM dd, yyyy')} • {t.category}</span>
                   </div>
                 </div>
-                <div className="text-right">
+                <div className="flex items-center gap-4 text-right">
                   <div className={`font-semibold text-sm md:text-base ${t.type === 'income' ? 'text-success' : 'text-foreground'}`}>
                     {t.type === 'income' ? '+' : '-'}₹{t.amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}
                   </div>
+                  {state.role === 'admin' && (
+                    <button 
+                      onClick={() => handleDelete(t.id)} 
+                      className="p-2 text-foreground/40 hover:text-danger hover:bg-danger/10 rounded-lg transition-colors cursor-pointer z-10"
+                      title="Delete Transaction"
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  )}
                 </div>
               </div>
             ))}

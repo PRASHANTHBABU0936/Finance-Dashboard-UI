@@ -1,16 +1,34 @@
-# React + Vite
+# Zorvyn Finance Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A clean, interactive, and beautifully responsive finance dashboard built with React and Tailwind CSS. The app features state-of-the-art UI elements, role-based interaction, dynamic insights, and data persistence. 
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Dashboard Overview:** Monitor your balance trends, savings goals, and spending breakdowns in real-time.
+- **Transactions Management:** Instantly add or delete transactions. 
+- **Search + Sorting:** Robust deep search through titles and categories, and live sorting by newly added, lowest amount, highest amount, etc.
+- **Role-Based UI:** Two primary usage modes — **Admin** (Full Access to add/delete/export) and **Viewer** (Read-Only safe mode).
+- **A.I. Insights:** Intelligent reactive cards showcasing Top Spending Categories, Overspending Detection, and automated Monthly Comparisons explicitly powered by your live data.
+- **Thoughtful Interactivity:** Employs animated toast notification feedback and fluid modal constraints. Includes dark mode explicitly out of the box!
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **React:** Core component rendering and hooks (`useContext`, `useReducer`, `useMemo`).
+- **Tailwind CSS:** Fully customized rapid utility styling explicitly including responsive behaviors.
+- **Context API:** Simple and light global state management for cross-component architecture context.
+- **Lucide React:** Beautiful native SVG iconography. 
+- **Framer Motion:** High-fidelity UI animations, transitions, and toast alerts.
 
-## Expanding the ESLint configuration
+## How to Run
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Follow these quick commands to spin the application right up:
+
+```bash
+# 1. Install all dependencies
+npm install
+
+# 2. Run the development server
+npm run dev
+```
+
+Enjoy tracking!

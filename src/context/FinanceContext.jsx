@@ -19,6 +19,7 @@ const initialState = {
   transactions: getInitialTransactions(),
   role: 'admin', // 'admin' or 'viewer'
   darkMode: getInitialTheme(),
+  feedback: null, // { type: 'success' | 'warning' | 'info', message: string }
 };
 
 function financeReducer(state, action) {
@@ -31,6 +32,10 @@ function financeReducer(state, action) {
       return { ...state, role: action.payload };
     case 'TOGGLE_DARK_MODE':
       return { ...state, darkMode: !state.darkMode };
+    case 'SET_FEEDBACK':
+      return { ...state, feedback: action.payload };
+    case 'CLEAR_FEEDBACK':
+      return { ...state, feedback: null };
     default:
       return state;
   }

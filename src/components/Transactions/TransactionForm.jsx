@@ -3,6 +3,7 @@ import { useFinance } from '../../context/FinanceContext';
 import { X } from 'lucide-react';
 import { categories } from '../../utils/mockData';
 import { motion, AnimatePresence } from 'framer-motion';
+import { AlertTriangle } from 'lucide-react';
 
 export function TransactionForm({ onClose }) {
   const { dispatch } = useFinance();
@@ -13,10 +14,14 @@ export function TransactionForm({ onClose }) {
     category: categories.expense[0],
     date: new Date().toISOString().split('T')[0]
   });
+  const [highValueConfirmed, setHighValueConfirmed] = useState(false);
+
+  const isHighValue = parseFloat(formData.amount) > 50000;
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!formData.title || !formData.amount || !formData.category) return;
+    if (isHighValue && !highValueConfirmed) return;
 
     dispatch({
       type: 'ADD_TRANSACTION',
@@ -28,6 +33,11 @@ export function TransactionForm({ onClose }) {
         category: formData.category,
         date: new Date(formData.date).toISOString()
       }
+    });
+
+    dispatch({
+      type: 'SET_FEEDBACK',
+      payload: { type: 'success', message: `${formData.title} added successfully.` }
     });
     
     onClose();
@@ -128,6 +138,7 @@ export function TransactionForm({ onClose }) {
                 <input 
                   type="date" 
                   required
+                  max={new Date().toISOString().split('T')[0]}
                   value={formData.date}
                   onChange={e => setFormData({...formData, date: e.target.value})}
                   className="w-full px-4 py-2.5 bg-secondary/50 border border-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
@@ -135,9 +146,35 @@ export function TransactionForm({ onClose }) {
               </div>
             </div>
 
+            <AnimatePresence>
+              {isHighValue && (
+                <motion.div 
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className="flex flex-col gap-2 overflow-hidden"
+                >
+                  <div className="flex items-start gap-2 p-3 bg-amber-500/10 text-amber-600 dark:text-amber-400 rounded-xl border border-amber-500/20">
+                    <AlertTriangle size={18} className="mt-0.5 flex-shrink-0" />
+                    <p className="text-sm">This is a high-value transaction. Please confirm the details are correct.</p>
+                  </div>
+                  <label className="flex items-center gap-2 cursor-pointer text-sm">
+                    <input 
+                      type="checkbox" 
+                      checked={highValueConfirmed}
+                      onChange={(e) => setHighValueConfirmed(e.target.checked)}
+                      className="rounded border-border text-primary focus:ring-primary/50"
+                    />
+                    I confirm this transaction
+                  </label>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
             <button 
               type="submit" 
-              className="mt-4 w-full py-3 bg-primary text-primary-foreground font-semibold rounded-xl hover:bg-primary/90 transition-colors shadow-md shadow-primary/20"
+              disabled={isHighValue && !highValueConfirmed}
+              className="mt-4 w-full py-3 bg-primary text-primary-foreground font-semibold rounded-xl hover:bg-primary/90 transition-colors shadow-md shadow-primary/20 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Save Transaction
             </button>
