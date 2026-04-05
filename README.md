@@ -1,34 +1,162 @@
-# Zorvyn Finance Dashboard
+# 💰 Finance Dashboard UI
 
-A clean, interactive, and beautifully responsive finance dashboard built with React and Tailwind CSS. The app features state-of-the-art UI elements, role-based interaction, dynamic insights, and data persistence. 
+A clean and interactive **frontend-only finance dashboard** built using React. This project demonstrates how financial data can be visualized, managed, and explored through an intuitive user interface.
 
-## Features
+---
 
-- **Dashboard Overview:** Monitor your balance trends, savings goals, and spending breakdowns in real-time.
-- **Transactions Management:** Instantly add or delete transactions. 
-- **Search + Sorting:** Robust deep search through titles and categories, and live sorting by newly added, lowest amount, highest amount, etc.
-- **Role-Based UI:** Two primary usage modes — **Admin** (Full Access to add/delete/export) and **Viewer** (Read-Only safe mode).
-- **A.I. Insights:** Intelligent reactive cards showcasing Top Spending Categories, Overspending Detection, and automated Monthly Comparisons explicitly powered by your live data.
-- **Thoughtful Interactivity:** Employs animated toast notification feedback and fluid modal constraints. Includes dark mode explicitly out of the box!
+## 🚀 Live Demo
 
-## Tech Stack
+*(Add your deployed link here after hosting)*
 
-- **React:** Core component rendering and hooks (`useContext`, `useReducer`, `useMemo`).
-- **Tailwind CSS:** Fully customized rapid utility styling explicitly including responsive behaviors.
-- **Context API:** Simple and light global state management for cross-component architecture context.
-- **Lucide React:** Beautiful native SVG iconography. 
-- **Framer Motion:** High-fidelity UI animations, transitions, and toast alerts.
+---
 
-## How to Run
+## 📌 Overview
 
-Follow these quick commands to spin the application right up:
+This dashboard allows users to track and understand their financial activity through:
+
+* 📊 Visual summaries
+* 💳 Transaction management
+* 📈 Spending insights
+* 🔐 Role-based UI behavior
+
+The project focuses on **UI design, component structure, state management, and interactivity**, without relying on any backend.
+
+---
+
+## ✨ Features
+
+### 📊 Dashboard Overview
+
+* Summary cards for **Total Balance, Income, Expenses**
+* 📈 Time-based visualization (balance trends)
+* 🧩 Category-wise spending breakdown
+
+---
+
+### 💳 Transactions Management
+
+* View transactions with:
+
+  * Date
+  * Amount
+  * Category
+  * Type (Income / Expense)
+* 🔍 Live search functionality
+* 📊 Sorting (date & amount)
+* 🎯 Filtering by category/type
+* ➕ Add transactions
+* 🗑 Delete transactions (Admin only)
+
+---
+
+### 🔐 Role-Based UI (Frontend Simulation)
+
+* **Admin Mode**
+
+  * Full access (add, delete, export)
+* **Viewer Mode**
+
+  * Read-only access
+* 🔄 Switch roles using dropdown
+* Clear UI indication of current role
+
+---
+
+### 🧠 Insights Panel
+
+* 💰 Highest spending category detection
+* 🗓 Monthly comparison (current vs previous)
+* ⚠️ Overspending alerts (expense > income)
+* 📉 Dynamic savings feedback
+* Graceful fallback for insufficient data
+
+---
+
+### ⚡ Interactive UX Enhancements
+
+* 🎉 Toast notifications for actions (add/delete)
+* 🚫 Validation for large transactions (> ₹50,000)
+* 📅 Date validation (no future entries)
+* 👋 Context-aware greeting (based on time)
+* 📭 Empty state handling
+
+---
+
+### 📱 Responsive Design
+
+* Fully responsive layout
+* Mobile-friendly UI
+* Sidebar adapts for smaller screens
+
+---
+
+## 🧠 State Management
+
+* Used **React Context API** for:
+
+  * Transactions data
+  * Role management
+* Local state for:
+
+  * Filters
+  * Sorting
+  * UI interactions
+
+---
+
+## 🛠 Tech Stack
+
+* ⚛️ React (Vite)
+* 🎨 Tailwind CSS
+* 🧠 Context API
+* 📊 Charting libraries (for visualizations)
+
+---
+
+## 📂 Project Structure
+
+```
+src/
+│── components/
+│   ├── Dashboard/
+│   ├── Transactions/
+│   ├── Layout/
+│
+│── context/
+│── utils/
+│── App.jsx
+│── main.jsx
+```
+
+---
+
+## ▶️ How to Run Locally
 
 ```bash
-# 1. Install all dependencies
 npm install
-
-# 2. Run the development server
 npm run dev
 ```
 
-Enjoy tracking!
+---
+
+## 🎯 Key Highlights
+
+* Clean and modular component design
+* Strong focus on **user experience and interactivity**
+* Simulated real-world features like **RBAC and insights**
+* Built entirely with **frontend technologies**
+
+---
+
+## 📌 Notes
+
+This project was developed as part of a frontend evaluation assignment.
+The focus is on **approach, UI design, and interactivity**, not backend integration.
+
+---
+
+## 🙌 Author
+
+**Prashanth Babu**
+
+---
